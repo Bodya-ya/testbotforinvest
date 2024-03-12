@@ -5,7 +5,9 @@ from os import getenv
 import json
 import pandas as pd
 import requests
+import matplotlib
 from matplotlib import pyplot as plt
+matplotlib.use('agg')
 from steps import STEPS
 import time
 load_dotenv()
@@ -28,7 +30,7 @@ def save_data(data: dict):
 
 user_data = load_data()
 tconv = lambda x: time.strftime("%H:%M:%S %d.%m.%Y", time.localtime(x))
-
+timeforinvest = lambda x: time.strftime("%d.%m.%Y", time.localtime(x))
 
 @bot.message_handler(commands=["start"])
 def start(message: Message):
@@ -94,14 +96,113 @@ def handler_users_answers(message: Message):
             text='выбери что-то из предложенного...',
         )
         return
-    elif current_choice == "YANDEX":
-        j = requests.get(
-            'http://iss.moex.com/iss/engines/stock/markets/shares/securities/YNDX/candles.json?from=2023-05-25&till=2023-09-01&interval=24').json()
-        data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
-        frame = pd.DataFrame(data)
-        plt.plot(list(frame['close']))
-        plt.savefig("shares.png")
-        with open("shares.png", "rb") as file:
+    elif current_choice == "Яндекс🔴":
+        with open(f"yandex{message.chat.id}.png", "wb+") as file:
+            j = requests.get(
+                'http://iss.moex.com/iss/engines/stock/markets/shares/securities/YNDX/candles.json?from=2024-01-01&till=2024-03-30&interval=24').json()
+            data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
+            frame = pd.DataFrame(data)
+            f1 = plt.figure()
+            plt.plot(list(frame['close']))
+            plt.savefig(f"yandex{message.chat.id}.png")
+            plt.clf()
+            plt.cla()
+            bot.send_photo(message.chat.id, file)
+            bot.send_message(message.chat.id, (tconv(message.date)))
+    elif current_choice == "ГазПром🔵":
+        with open(f"gazprom{message.chat.id}.png", "wb+") as file:
+            j = requests.get(
+                'http://iss.moex.com/iss/engines/stock/markets/shares/securities/GAZP/candles.json?from=2024-01-01&till=2024-03-30&interval=24').json()
+            data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
+            frame = pd.DataFrame(data)
+            f2 = plt.figure()
+            plt.ioff()
+            plt.plot(list(frame['close']))
+            plt.savefig(f"gazprom{message.chat.id}.png")
+            plt.clf()
+            plt.cla()
+            bot.send_photo(message.chat.id, file)
+            bot.send_message(message.chat.id, (tconv(message.date)))
+    elif current_choice == "Лукоил🔴":
+        with open(f"luckoul{message.chat.id}.png", "wb+") as file:
+            j = requests.get(
+                'http://iss.moex.com/iss/engines/stock/markets/shares/securities/LKOH/candles.json?from=2024-01-01&till=2024-03-30&interval=24').json()
+            data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
+            frame = pd.DataFrame(data)
+            f3 = plt.figure()
+            plt.ioff()
+            plt.plot(list(frame['close']))
+            plt.savefig(f"luckoul{message.chat.id}.png")
+            plt.clf()
+            plt.cla()
+            bot.send_photo(message.chat.id, file)
+            bot.send_message(message.chat.id, (tconv(message.date)))
+    elif current_choice == "Детский мир🔵":
+        with open(f"kidworld{message.chat.id}.png", "wb+") as file:
+            j = requests.get(
+                'http://iss.moex.com/iss/engines/stock/markets/shares/securities/DSKY/candles.json?from=2024-01-01&till=2024-03-30&interval=24').json()
+            data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
+            frame = pd.DataFrame(data)
+            f4 = plt.figure()
+            plt.ioff()
+            plt.plot(list(frame['close']))
+            plt.savefig(f"kidworld{message.chat.id}.png")
+            plt.clf()
+            plt.cla()
+            bot.send_photo(message.chat.id, file)
+            bot.send_message(message.chat.id, (tconv(message.date)))
+    elif current_choice == "Аэрофлот🔵":
+        with open(f"airflot{message.chat.id}.png", "wb+") as file:
+            j = requests.get(
+                'http://iss.moex.com/iss/engines/stock/markets/shares/securities/AFLT/candles.json?from=2024-01-01&till=2024-03-30&interval=24').json()
+            data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
+            frame = pd.DataFrame(data)
+            f5 = plt.figure()
+            plt.plot(list(frame['close']))
+            plt.savefig(f"airflot{message.chat.id}.png")
+            plt.clf()
+            plt.cla()
+        
+            bot.send_photo(message.chat.id, file)
+            bot.send_message(message.chat.id, (tconv(message.date)))
+    elif current_choice == "Сбербанк🟢":
+        with open(f"sber{message.chat.id}.png", "wb+") as file:    
+            j = requests.get(
+                'http://iss.moex.com/iss/engines/stock/markets/shares/securities/SBER/candles.json?from=2024-01-01&till=2024-03-30&interval=24').json()
+            data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
+            frame = pd.DataFrame(data)
+            f6 = plt.figure()
+            plt.plot(list(frame['close']))
+            plt.savefig(f"sber{message.chat.id}.png")
+            plt.clf()
+            plt.cla()
+            bot.send_photo(message.chat.id, file)
+            bot.send_message(message.chat.id, (tconv(message.date)))
+    elif current_choice == "МТС🔴":
+        with open(f"mts{message.chat.id}.png", "wb+") as file:    
+            j = requests.get(
+                'http://iss.moex.com/iss/engines/stock/markets/shares/securities/MTSS/candles.json?from=2024-01-01&till=2024-03-30&interval=24').json()
+            data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
+            frame = pd.DataFrame(data)
+            f7 = plt.figure()
+            plt.plot(list(frame['close']))
+            plt.savefig(f"mts{message.chat.id}.png")
+            plt.clf()
+            plt.cla()
+            bot.send_photo(message.chat.id, file)
+            bot.send_message(message.chat.id, (tconv(message.date)))
+    elif current_choice == "ПИК🟠":
+        with open(f"pick{message.chat.id}.png", "wb+") as file:
+            j = requests.get(
+                'http://iss.moex.com/iss/engines/stock/markets/shares/securities/PIKK/candles.json?from=2024-01-01&till=2024-03-30&interval=24').json()
+            data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
+            frame = pd.DataFrame(data)
+            f8 = plt.figure()
+            plt.ioff()
+            plt.plot(list(frame['close']))
+            plt.savefig(f"pick{message.chat.id}.png", "wb+")
+            plt.clf()
+            plt.cla()
             bot.send_photo(message.chat.id, file)
             bot.send_message(message.chat.id, (tconv(message.date)))
     else:
@@ -118,4 +219,8 @@ def callback_worker(message):
     save_data(user_data)
     send_next_quest_step(user_id)
 if __name__ == "__main__":
-    bot.polling()
+    while True:
+        try:
+            bot.polling()
+        except Exception as ex:
+            pass
