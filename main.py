@@ -198,9 +198,8 @@ def handler_users_answers(message: Message):
             data = [{k: r[i] for i, k in enumerate(j['candles']['columns'])} for r in j['candles']['data']]
             frame = pd.DataFrame(data)
             f8 = plt.figure()
-            plt.ioff()
             plt.plot(list(frame['close']))
-            plt.savefig(f"pick{message.chat.id}.png", "wb+")
+            plt.savefig(f"pick{message.chat.id}.png")
             plt.clf()
             plt.cla()
             bot.send_photo(message.chat.id, file)
